@@ -1,1 +1,1 @@
-# Movie_Review_Predicion_using_Neural_Network_and_API
+# Movie_Review_Classification_using_Neural_Network_and_API
