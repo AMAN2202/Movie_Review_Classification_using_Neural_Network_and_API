@@ -6,3 +6,6 @@
 *  To use api on local machine  use url "http://127.0.0.1:8000/api/?review=param" 
 *  param: string to clasiify
 *  it will return "positive" or "negative" depending upon review or "some_errror_occured" 
+
+# References
+* https://realpython.com/python-keras-text-classification/
