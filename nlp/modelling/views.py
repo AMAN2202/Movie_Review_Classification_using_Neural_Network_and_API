@@ -1,16 +1,19 @@
 from django.shortcuts import render
 import os
-
+import pickle
 from django.http import JsonResponse
 from sklearn.externals import joblib
+import tensorflow as tf
+global graph,model
+graph = tf.get_default_graph()
 
 CURRENT_DIR = os.path.dirname(__file__)
 _nlp=os.path.join(CURRENT_DIR,'nlp')
 vectorize_file=os.path.join(_nlp, 'vectorizer')
-model_file = os.path.join(_nlp, 'logistic.model')
+model_file = os.path.join(_nlp, 'model')
 
-model = joblib.load(model_file)
-vectorize=joblib.load(vectorize_file)
+model = pickle.load(open(model_file, 'rb'))
+vectorize=pickle.load(open(vectorize_file, 'rb'))
 
 
 # Create your views here.
@@ -20,12 +23,17 @@ def api_sentiment_pred(request):
 	fin_res="result_after_prediction_to_be_returned"
 	try:
 	    review = [request.GET['review']]
+	    print(review)
 	    review=vectorize.transform(review)
-	    res=model.predict(review)
+	    res=[]
+	    with graph.as_default():
+	    	res= model.predict(review)
+	    print(res)
 	    if(res[0]<abs(1-res[0])):
 	    	fin_res="negative"
 	    else:
 	    	fin_res="positive"
-	except:
-		fin_res="some error occured"
+	except Exception as e:
+    		print(e)
+    		fin_res="some error ocuured"
 	return (JsonResponse(fin_res, safe=False))
