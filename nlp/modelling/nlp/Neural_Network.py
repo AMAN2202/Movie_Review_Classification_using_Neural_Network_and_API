@@ -19,7 +19,6 @@ input_dim = X_train.shape[1]  # Number of features
 model = Sequential()
 model.add(layers.Dense(10, input_dim=input_dim, activation='relu'))
 model.add(layers.Dense(10, activation='sigmoid'))
-model.add(layers.Dense(10, activation='sigmoid'))
 model.add(layers.Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam',metrics=['accuracy'])
 model.summary()
@@ -32,12 +31,12 @@ print("Testing Accuracy:  {:.3f}".format(accuracy))
 pickle.dump(vectorizer, open('vectorizer','wb'))
 pickle.dump(model, open('model', 'wb'))
 #predict using sample
-sample=["Movie was awesome","Movie was bad"]
+sample=["Movie was awesome"]
 test=vectorizer.transform(sample)
 res=model.predict(test)
-for i in res:
-    if(abs(i)>abs(1-i)):
-        print("pos")
-    else:
-        print("neg")
+
+if(abs(res[0])>abs(1-res[0])):
+    print("pos")
+else:
+    print("neg")
 
